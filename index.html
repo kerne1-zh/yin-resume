@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>尹子豪 · 个人简历</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ 背景层：深蓝渐变 + 光晕 + 星点 + 扫描线 ============ -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <canvas id="stars"></canvas>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ============ 顶部导航 ============
+     注意：工具栏（编辑/导出/导入/重置）由 data.js 里的 CONFIG.editToolbar 控制，
+     默认隐藏；页面整体是只读的，内容一律来自 data.js。 -->
+<header class="topbar">
+  <a class="brand" href="#top">
+    <span class="brand-mark">尹</span>
+    <span class="brand-text" data-bind="site.title">尹子豪 · 个人主页</span>
+  </a>
+
+  <nav class="nav">
+    <a href="#profile" class="nav-link">个人信息</a>
+    <a href="#experience" class="nav-link">工作经历</a>
+    <a href="#projects" class="nav-link">项目作品</a>
+    <a href="#skills" class="nav-link">技能标签</a>
+  </nav>
+
+  <div class="toolbar">
+    <button id="btnEdit" class="btn btn-ghost" title="开启后可直接点击文字修改">✎ 编辑</button>
+    <button id="btnExport" class="btn btn-ghost" title="把当前内容导出成 JSON 文件备份">⬇ 导出</button>
+    <button id="btnImport" class="btn btn-ghost" title="从 JSON 文件恢复内容">⬆ 导入</button>
+    <button id="btnReset" class="btn btn-ghost" title="放弃本地改动，恢复 data.js 默认内容">↺ 重置</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden />
+  </div>
+</header>
+
+<div class="edit-hint" id="editHint" hidden>
+  <span class="dot"></span>
+  <b>编辑模式已开启</b> —— 直接点击任意文字即可修改；图片/视频用每块下方的上传按钮。改完会自动保存在本机浏览器里。
+  <button class="btn btn-mini" id="btnEditOff">完成</button>
+</div>
+
+<main id="top">
+
+  <!-- ==================== 首屏 ==================== -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-text">
+        <p class="hero-kicker">
+          <span class="blast">◆</span>
+          <span data-bind="site.subtitle">AI 制作师 / AI 漫剧导演方向</span>
+        </p>
+        <h1 class="hero-name" data-bind="profile.name">尹子豪</h1>
+        <p class="hero-role">
+          <span class="role-chip" data-bind="profile.jobTitle">AI 制作师</span>
+        </p>
+        <p class="hero-tagline" data-bind="profile.tagline"></p>
+
+        <div class="hero-stats" id="heroStats"><!-- JS 渲染 --></div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#experience">查看工作经历</a>
+          <a class="btn btn-outline" href="#projects">浏览项目作品</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="hero-slant" aria-hidden="true"></div>
+  </section>
+
+  <!-- ==================== 一、个人信息 ==================== -->
+  <section class="section" id="profile">
+    <div class="sec-head">
+      <span class="sec-index">01</span>
+      <h2 class="sec-title">个人信息</h2>
+      <span class="sec-en">PROFILE</span>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="profile-grid">
+      <!-- 基本资料 -->
+      <div class="panel">
+        <h3 class="panel-title"><span class="panel-dot"></span>基本资料</h3>
+        <ul class="info-list" id="infoList"><!-- JS 渲染 --></ul>
+      </div>
+
+      <!-- 自我描述 -->
+      <div class="panel">
+        <h3 class="panel-title"><span class="panel-dot"></span>自我描述</h3>
+        <p class="bio" data-bind="profile.bio"></p>
+      </div>
+
+      <!-- 教育背景 -->
+      <div class="panel panel-wide">
+        <h3 class="panel-title"><span class="panel-dot"></span>教育背景</h3>
+        <div class="edu-list" id="eduList"><!-- JS 渲染 --></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 二、工作经历 ==================== -->
+  <section class="section" id="experience">
+    <div class="sec-head">
+      <span class="sec-index">02</span>
+      <h2 class="sec-title">工作经历</h2>
+      <span class="sec-en">EXPERIENCE</span>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="timeline" id="timeline"><!-- JS 渲染 --></div>
+  </section>
+
+  <!-- ==================== 三、项目作品 ==================== -->
+  <section class="section" id="projects">
+    <div class="sec-head">
+      <span class="sec-index">03</span>
+      <h2 class="sec-title">项目作品</h2>
+      <span class="sec-en">WORKS</span>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="project-list" id="projectList"><!-- JS 渲染 --></div>
+  </section>
+
+  <!-- ==================== 四、技能标签 ==================== -->
+  <section class="section" id="skills">
+    <div class="sec-head">
+      <span class="sec-index">04</span>
+      <h2 class="sec-title">技能标签</h2>
+      <span class="sec-en">SKILLS</span>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="skill-groups" id="skillGroups"><!-- JS 渲染 --></div>
+
+    <div class="skill-cloud" id="skillCloud"><!-- JS 渲染：全部技能标签 --></div>
+  </section>
+
+  <footer class="footer">
+    <p data-bind="site.footer">© 尹子豪 · 个人网页简历</p>
+    <p class="footer-sub">深蓝二次元风格 · 内容可在页面内直接编辑 · 图片与视频支持上传</p>
+  </footer>
+</main>
+
+<!-- ============ 提示条 ============ -->
+<div class="toast" id="toast" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
